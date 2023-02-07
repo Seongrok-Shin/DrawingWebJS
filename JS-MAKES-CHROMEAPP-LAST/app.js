@@ -11,12 +11,15 @@ const eraseBtn = document.getElementById("eraser-btn");
 const addFile = document.getElementById("file");
 const addText = document.getElementById("text");
 const saveBtn = document.getElementById("save-btn");
+const fontSize = document.getElementById("font-size");
+
 const CANVAS_WIDTH = 800;
 const CANVAS_HEGIHT = 800;
 
 canvas.width = 800;
 canvas.height = 800;
 ctx.lineWidth = lineWidth.value;
+ctx.fontSize = fontSize.value;
 ctx.lineCap = "round";
 /*움직이는 마우스로 선 그리기*/
 // ctx.lineWidth = 2;
@@ -84,10 +87,10 @@ function onColorClick(event) {
 function onModeClick() {
   if (isFilling) {
     isFilling = false;
-    modeBtn.innerText = "Fill";
+    modeBtn.innerText = "🪣Fill";
   } else {
     isFilling = true;
-    modeBtn.innerText = "Draw";
+    modeBtn.innerText = "✏️Draw";
   }
 } //To change mode to fill or draw.
 
@@ -105,7 +108,7 @@ function onRemoveClick() {
 function onEraseClick() {
   ctx.strokeStyle = "white";
   isFilling = false;
-  modeBtn.innerText = "Fill";
+  modeBtn.innerText = "🪣Fill";
 } // To erase the line.
 
 function onFileChange(event) {
@@ -121,11 +124,10 @@ function onFileChange(event) {
 
 function onDoubleClick(event) {
   const text = addText.value;
-
   if (text !== "") {
     ctx.save();
     ctx.lineWidth = 1;
-    ctx.font = "24px serif";
+    ctx.font = (ctx.fontSize | 0) + "px serif";
     ctx.fillText(text, event.offsetX, event.offsetY);
     ctx.restore();
   }
@@ -138,6 +140,10 @@ function onSaveClick() {
   a.download = "myDrawing.png";
   a.click();
 } // To save the image what the user drew.
+
+function onFontSizeChange(event) {
+  ctx.fontSize = event.target.value;
+}
 
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", onMouseDown);
@@ -160,3 +166,4 @@ addFile.addEventListener("change", onFileChange);
 canvas.addEventListener("dblclick", onDoubleClick);
 
 saveBtn.addEventListener("click", onSaveClick);
+fontSize.addEventListener("change", onFontSizeChange);
