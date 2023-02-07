@@ -8,6 +8,7 @@ const lineColorOptions = Array.from(
 const modeBtn = document.getElementById("mode-btn");
 const removeBtn = document.getElementById("remove-btn");
 const eraseBtn = document.getElementById("eraser-btn");
+const addFile = document.getElementById("file");
 const CANVAS_WIDTH = 800;
 const CANVAS_HEGIHT = 800;
 
@@ -105,6 +106,16 @@ function onEraseClick() {
   modeBtn.innerText = "Fill";
 }
 
+function onFileChange(event) {
+  const file = event.target.files[0];
+  const url = URL.createObjectURL(file);
+  const image = new Image();
+  image.src = url;
+  image.onload = function () {
+    ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEGIHT);
+    fileInput.value = null;
+  };
+}
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", onMouseDown);
 document.addEventListener("mouseup", onMouseUp);
@@ -120,3 +131,4 @@ lineColorOptions.forEach((lineColor) =>
 modeBtn.addEventListener("click", onModeClick);
 removeBtn.addEventListener("click", onRemoveClick);
 eraseBtn.addEventListener("click", onEraseClick);
+addFile.addEventListener("change", onFileChange);
