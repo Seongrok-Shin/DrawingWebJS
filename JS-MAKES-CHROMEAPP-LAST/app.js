@@ -9,13 +9,15 @@ const modeBtn = document.getElementById("mode-btn");
 const removeBtn = document.getElementById("remove-btn");
 const eraseBtn = document.getElementById("eraser-btn");
 const addFile = document.getElementById("file");
+const addText = document.getElementById("text");
+
 const CANVAS_WIDTH = 800;
 const CANVAS_HEGIHT = 800;
 
 canvas.width = 800;
 canvas.height = 800;
 ctx.lineWidth = lineWidth.value;
-
+ctx.lineCap = "round";
 /*움직이는 마우스로 선 그리기*/
 // ctx.lineWidth = 2;
 
@@ -113,9 +115,22 @@ function onFileChange(event) {
   image.src = url;
   image.onload = function () {
     ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEGIHT);
-    fileInput.value = null;
+    addFile.value = null;
   };
 }
+
+function onDoubleClick(event) {
+  const text = addText.value;
+
+  if (text !== "") {
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.font = "24px serif";
+    ctx.fillText(text, event.offsetX, event.offsetY);
+    ctx.restore();
+  }
+}
+
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", onMouseDown);
 document.addEventListener("mouseup", onMouseUp);
@@ -131,4 +146,7 @@ lineColorOptions.forEach((lineColor) =>
 modeBtn.addEventListener("click", onModeClick);
 removeBtn.addEventListener("click", onRemoveClick);
 eraseBtn.addEventListener("click", onEraseClick);
+
 addFile.addEventListener("change", onFileChange);
+
+canvas.addEventListener("dblclick", onDoubleClick);
